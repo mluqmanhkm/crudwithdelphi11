@@ -1,0 +1,122 @@
+object FormTambahDesa: TFormTambahDesa
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'FormTambahDesa'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  WindowState = wsMaximized
+  OnShow = FormShow
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    TabOrder = 0
+    TabStop = True
+    object Label1: TLabel
+      Left = 80
+      Top = 96
+      Width = 24
+      Height = 15
+      Caption = 'desa'
+    end
+    object Label2: TLabel
+      Left = 80
+      Top = 267
+      Width = 84
+      Height = 15
+      Caption = 'Cari Nama Desa'
+    end
+    object Label3: TLabel
+      Left = 350
+      Top = 267
+      Width = 71
+      Height = 15
+      Caption = 'Jumlah Data: '
+    end
+    object Label4: TLabel
+      Left = 427
+      Top = 267
+      Width = 6
+      Height = 15
+      Caption = '0'
+    end
+    object DBGrid1: TDBGrid
+      Left = 80
+      Top = 296
+      Width = 219
+      Height = 209
+      DataSource = DataModule1.DataSourceTambahDesa
+      ReadOnly = True
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+      OnCellClick = DBGrid1CellClick
+    end
+    object Edit1: TEdit
+      Left = 128
+      Top = 93
+      Width = 121
+      Height = 23
+      TabOrder = 1
+      OnKeyUp = Edit1KeyUp
+    end
+    object Button1: TButton
+      Left = 80
+      Top = 192
+      Width = 75
+      Height = 25
+      Caption = 'Tambah'
+      TabOrder = 2
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 161
+      Top = 192
+      Width = 75
+      Height = 25
+      Caption = 'Ubah'
+      TabOrder = 3
+      OnClick = Button2Click
+    end
+    object Button3: TButton
+      Left = 242
+      Top = 192
+      Width = 75
+      Height = 25
+      Caption = 'Hapus'
+      TabOrder = 4
+      OnClick = Button3Click
+    end
+    object Button4: TButton
+      Left = 323
+      Top = 192
+      Width = 75
+      Height = 25
+      Caption = 'Batal'
+      TabOrder = 5
+      OnClick = Button4Click
+    end
+    object Edit2: TEdit
+      Left = 178
+      Top = 264
+      Width = 121
+      Height = 23
+      TabOrder = 6
+      OnChange = Edit2Change
+    end
+  end
+end

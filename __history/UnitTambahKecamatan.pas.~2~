@@ -1,0 +1,31 @@
+unit UnitTambahKecamatan;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormTambahKecamatan = class(TForm)
+    Panel1: TPanel;
+    Edit2: TEdit;
+    Label2: TLabel;
+    DBGrid1: TDBGrid;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahKecamatan: TFormTambahKecamatan;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+end.

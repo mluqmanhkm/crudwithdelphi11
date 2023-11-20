@@ -1,0 +1,103 @@
+unit UnitDataModule;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractConnection, ZConnection,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+
+type
+  TDataModule1 = class(TDataModule)
+    ZQueryPerangkat: TZQuery;
+    ZConnection1: TZConnection;
+    DataSourcePerangkat: TDataSource;
+    DataSourcePenanganan: TDataSource;
+    ZQueryPenanganan: TZQuery;
+    ZQueryLogin: TZQuery;
+    ZQueryUser: TZQuery;
+    DataSourceUser: TDataSource;
+    ZQueryTambahDesa: TZQuery;
+    DataSourceTambahDesa: TDataSource;
+    ZQueryTambahKecamatan: TZQuery;
+    DataSourceTambahKecamatan: TDataSource;
+    ZQueryTambahLokasi: TZQuery;
+    DataSourceTambahLokasi: TDataSource;
+    ZQueryTambahStatus: TZQuery;
+    DataSourceTambahStatus: TDataSource;
+    ZQueryTambahPerangkat: TZQuery;
+    DataSourceTambahPerangkat: TDataSource;
+    DataSourceTambahJenisTempatIbadah: TDataSource;
+    ZQueryTambahJenisTempatIbadah: TZQuery;
+    ZQueryLog: TZQuery;
+    DataSourceLog: TDataSource;
+    ZQueryLogid_log: TIntegerField;
+    ZQueryLogaktivitas: TWideMemoField;
+    ZQueryLogtanggal: TDateTimeField;
+    ZQueryLogadmin: TWideStringField;
+    ZQueryTambahDesaid_desa: TIntegerField;
+    ZQueryTambahDesadesa: TWideStringField;
+    ZQueryTambahDesacreated_at: TDateTimeField;
+    ZQueryTambahDesaupdated_at: TDateTimeField;
+    ZQueryTambahKecamatanid_kecamatan: TIntegerField;
+    ZQueryTambahKecamatankecamatan: TWideStringField;
+    ZQueryTambahKecamatancreated_at: TDateTimeField;
+    ZQueryTambahKecamatanupdated_at: TDateTimeField;
+    ZQueryTambahLokasiid_lokasi: TIntegerField;
+    ZQueryTambahLokasinama_tempat: TWideStringField;
+    ZQueryTambahLokasikoordinat: TWideStringField;
+    ZQueryTambahLokasialamat: TWideStringField;
+    ZQueryTambahLokasidesa: TWideStringField;
+    ZQueryTambahLokasikecamatan: TWideStringField;
+    ZQueryTambahLokasijenis_tempat_ibadah: TWideStringField;
+    ZQueryTambahStatusid_status: TIntegerField;
+    ZQueryTambahStatusstatus: TWideStringField;
+    ZQueryTambahStatuscreated_at: TDateTimeField;
+    ZQueryTambahStatusupdated_at: TDateTimeField;
+    ZQueryTambahPerangkatid_perangkat: TIntegerField;
+    ZQueryTambahPerangkatnama_perangkat: TWideStringField;
+    ZQueryTambahPerangkattanggal: TDateTimeField;
+    ZQueryTambahPerangkatjenis: TWideStringField;
+    ZQueryTambahPerangkatstatus: TWideStringField;
+    ZQueryTambahPerangkatnama_tempat: TWideStringField;
+    ZQueryTambahPerangkatkoordinat: TWideStringField;
+    ZQueryTambahPerangkatalamat: TWideStringField;
+    ZQueryTambahPerangkatdesa: TWideStringField;
+    ZQueryTambahPerangkatkecamatan: TWideStringField;
+    ZQueryTambahJenisTempatIbadahid_jenis_tempat_ibadah: TIntegerField;
+    ZQueryTambahJenisTempatIbadahjenis_tempat_ibadah: TWideStringField;
+    ZQueryTambahJenisTempatIbadahcreated_at: TDateTimeField;
+    ZQueryTambahJenisTempatIbadahupdated_at: TDateTimeField;
+    ZQueryUserid_account: TIntegerField;
+    ZQueryUsernama: TWideStringField;
+    ZQueryUserusername: TWideStringField;
+    ZQueryUserpassword: TWideStringField;
+    ZQueryUseremail: TWideStringField;
+    ZQueryUserhak_akses: TWideStringField;
+    ZQueryUserno_hp: TWideStringField;
+    ZQueryUsercreated_at: TDateTimeField;
+    ZQueryUserupdated_at: TDateTimeField;
+    procedure ZQueryLogaktivitasGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+  Username, Password: String;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDataModule1.ZQueryLogaktivitasGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := Copy( DataModule1.ZQueryLog.FieldByName('aktivitas').AsString, 1, 200);
+end;
+
+end.

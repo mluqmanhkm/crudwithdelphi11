@@ -1,0 +1,39 @@
+object FormPerangkat: TFormPerangkat
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'FormPerangkat'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  WindowState = wsMaximized
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    Caption = 'DataModule1.DataSourcePerangkat'
+    TabOrder = 0
+    object DBGrid1: TDBGrid
+      Left = 137
+      Top = 320
+      Width = 1105
+      Height = 120
+      DataSource = DataModule1.DataSourcePerangkat
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+    end
+  end
+end

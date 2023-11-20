@@ -1,0 +1,226 @@
+unit UnitUser;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids, ZAbstractConnection, ZConnection, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset;
+
+type
+  TFormUser = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    Panel2: TPanel;
+    DBGrid2: TDBGrid;
+    Button2: TButton;
+    Button3: TButton;
+    Button6: TButton;
+    Button4: TButton;
+    Username: TLabel;
+    Edit1: TEdit;
+    Password: TLabel;
+    Edit2: TEdit;
+    Label1: TLabel;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Edit5: TEdit;
+    ComboBox1: TComboBox;
+    Label5: TLabel;
+    Edit6: TEdit;
+    Label6: TLabel;
+    Label7: TLabel;
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure Button6Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Edit6Change(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormUser: TFormUser;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormUser.Button2Click(Sender: TObject);
+begin
+if edit3.Text = '' then
+  begin
+    Showmessage('Nama masih kosong');
+    edit3.SetFocus;
+  end else
+if edit1.Text = '' then
+  begin
+    Showmessage('Username masih kosong');
+    edit1.SetFocus;
+  end else
+  if edit2.Text = '' then
+  begin
+    Showmessage('Password masih kosong');
+    edit2.SetFocus;
+  end else
+  if edit4.Text = '' then
+  begin
+    Showmessage('Email masih kosong');
+    edit4.SetFocus;
+  end else
+  if ComboBox1.Text = '' then
+  begin
+    Showmessage('Hak Akses masih kosong');
+    ComboBox1.SetFocus;
+  end else
+  if edit5.Text = '' then
+  begin
+    Showmessage('No Hp masih kosong');
+    edit5.SetFocus;
+  end else
+
+  begin
+    with DataModule1.ZQueryUser do
+    begin
+      Append;
+      FieldByname('nama').AsString := Edit3.Text;
+      FieldByname('username').AsString := Edit1.Text;
+      FieldByName('password').AsString := Edit2.Text;
+      FieldByname('email').AsString := Edit4.Text;
+      FieldByname('hak_akses').AsString := ComboBox1.Text;
+      FieldByname('no_hp').AsString := Edit5.Text;
+//      FieldByName('id_account').AsInteger :=Strtoint(IntToStr(ZQuery1.RecordCount+1));
+      Post;
+      Showmessage('Data berhasil ditambahkan');
+      Edit3.Clear;
+      Edit1.Clear;
+      Edit2.Clear;
+      Edit4.Clear;
+      ComboBox1.ItemIndex := -1;
+      Edit5.Clear;
+    end;
+end;
+end;
+
+procedure TFormUser.Button3Click(Sender: TObject);
+begin
+if edit3.Text = '' then
+  begin
+    Showmessage('Nama masih kosong');
+    edit3.SetFocus;
+  end else
+if edit1.Text = '' then
+  begin
+    Showmessage('Username masih kosong');
+    edit1.SetFocus;
+  end else
+  if edit2.Text = '' then
+  begin
+    Showmessage('Password masih kosong');
+    edit2.SetFocus;
+  end else
+  if edit4.Text = '' then
+  begin
+    Showmessage('Email masih kosong');
+    edit4.SetFocus;
+  end else
+  if ComboBox1.Text = '' then
+  begin
+    Showmessage('Hak Akses masih kosong');
+    ComboBox1.SetFocus;
+  end else
+  if edit5.Text = '' then
+  begin
+    Showmessage('No Hp masih kosong');
+    edit5.SetFocus;
+  end else
+
+  begin
+    with DataModule1.ZQueryUser do
+    begin
+      Edit;
+      FieldByname('nama').AsString := Edit3.Text;
+      FieldByname('username').AsString := Edit1.Text;
+      FieldByName('password').AsString := Edit2.Text;
+      FieldByname('email').AsString := Edit4.Text;
+      FieldByname('hak_akses').AsString := ComboBox1.Text;
+      FieldByname('no_hp').AsString := Edit5.Text;
+      Post;
+      Showmessage('Data berhasil diubah');
+      Edit3.Clear;
+      Edit1.Clear;
+      Edit2.Clear;
+      Edit4.Clear;
+      ComboBox1.ItemIndex := -1;
+      Edit5.Clear;
+    end;
+end;
+end;
+
+procedure TFormUser.Button4Click(Sender: TObject);
+begin
+if messageDlg('Apakah yakin data '+ DataModule1.ZQueryUser.FieldByName('username').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    DataModule1.ZQueryUser.Delete;
+
+    DataModule1.ZQueryUser.SQL.Text := 'ALTER TABLE akun AUTO_INCREMENT = 1';
+    DataModule1.ZQueryUser.ExecSQL;
+
+    DataModule1.ZQueryUser.Close;
+    DataModule1.ZQueryUser.SQL.Text := 'SELECT * FROM akun';
+    DataModule1.ZQueryUser .Open;
+    ShowMessage('Data berhasil dihapus');
+
+    Edit3.Clear;
+    Edit1.Clear;
+    Edit2.Clear;
+    Edit4.Clear;
+    ComboBox1.ItemIndex := -1;
+    Edit5.Clear;
+  end;
+end;
+
+procedure TFormUser.Button6Click(Sender: TObject);
+begin
+  Edit3.Clear;
+  Edit1.Clear;
+  Edit2.Clear;
+  Edit4.Clear;
+  ComboBox1.ItemIndex := -1;
+  Edit5.Clear;
+
+end;
+
+procedure TFormUser.DBGrid1CellClick(Column: TColumn);
+begin
+  Edit3.Text:=DataModule1.ZQueryUser.FieldByName('nama').AsString;
+  Edit1.Text := DataModule1.ZQueryUser.FieldByName('username').AsString;
+  Edit2.Text:=DataModule1.ZQueryUser.FieldByName('password').AsString;
+  Edit4.Text:=DataModule1.ZQueryUser.FieldByName('email').AsString;
+  if not DataModule1.ZQueryUser.IsEmpty then
+    begin
+      ComboBox1.Text := DataModule1.ZQueryUser.FieldByName('hak_akses').AsString;
+    end;
+  Edit5.Text:=DataModule1.ZQueryUser.FieldByName('no_hp').AsString;
+end;
+
+procedure TFormUser.Edit6Change(Sender: TObject);
+begin
+    DataModule1.ZQueryUser.Close;
+    DataModule1.ZQueryUser.SQL.Text := 'SELECT * FROM akun WHERE nama LIKE :Search';
+    DataModule1.ZQueryUser.ParamByName('Search').AsString := '%' + Edit6.Text + '%';
+    DataModule1.ZQueryUser.Open;
+
+    Label7.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+end.

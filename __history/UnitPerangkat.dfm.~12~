@@ -1,0 +1,84 @@
+object FormPerangkat: TFormPerangkat
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'FormPerangkat'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  WindowState = wsMaximized
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    TabOrder = 0
+    object DBGrid1: TDBGrid
+      Left = 105
+      Top = 393
+      Width = 1209
+      Height = 169
+      DataSource = DataSource1
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+    end
+  end
+  object ZConnection1: TZConnection
+    ControlsCodePage = cCP_UTF16
+    Catalog = ''
+    Properties.Strings = (
+      'controls_cp=CP_UTF16')
+    Connected = True
+    HostName = 'LocalHost'
+    Port = 3306
+    Database = 'sirinetsunami'
+    User = 'root'
+    Password = ''
+    Protocol = 'mysql'
+    LibraryLocation = 
+      'C:\Users\User\Documents\Embarcadero\Studio\Projects\sirinetsunam' +
+      'i\libmysql.dll'
+    Left = 619
+    Top = 336
+  end
+  object ZQuery1: TZQuery
+    Connection = ZConnection1
+    Active = True
+    SQL.Strings = (
+      
+        'SELECT aktivasi.id_aktivasi, perangkat.id_perangkat, perangkat.n' +
+        'ama_perangkat, perangkat.tanggal, status.status, lokasi.nama_tem' +
+        'pat, lokasi.koordinat, lokasi.alamat, lokasi.desa, lokasi.kecama' +
+        'tan FROM aktivasi INNER JOIN perangkat ON aktivasi.id_perangkat ' +
+        '= perangkat.id_perangkat INNER JOIN status ON perangkat.id_statu' +
+        's=status.id_status INNER JOIN lokasi ON perangkat.id_lokasi=loka' +
+        'si.id_lokasi'
+      '')
+    Params = <>
+    Properties.Strings = (
+      
+        'SELECT perangkat.id_perangkat, perangkat.nama_perangkat, perangk' +
+        'at.tanggal, status.status, perangkat.id_lokasi FROM perangkat IN' +
+        'NER JOIN status ON perangkat.id_status=status.id_status ORDER BY' +
+        ' perangkat.id_status')
+    Left = 619
+    Top = 368
+  end
+  object DataSource1: TDataSource
+    DataSet = ZQuery1
+    Left = 616
+    Top = 408
+  end
+end

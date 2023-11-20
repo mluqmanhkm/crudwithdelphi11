@@ -1,0 +1,39 @@
+unit UnitPerangkat;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, ZAbstractConnection,
+  ZConnection, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormPerangkat = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    ZConnection1: TZConnection;
+    ZQuery1: TZQuery;
+    DataSource1: TDataSource;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormPerangkat: TFormPerangkat;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TFormPerangkat.Button1Click(Sender: TObject);
+begin
+
+end;
+
+end.

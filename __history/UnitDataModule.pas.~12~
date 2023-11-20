@@ -1,0 +1,60 @@
+unit UnitDataModule;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractConnection, ZConnection,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+
+type
+  TDataModule1 = class(TDataModule)
+    ZQueryPerangkat: TZQuery;
+    ZConnection1: TZConnection;
+    DataSourcePerangkat: TDataSource;
+    DataSourcePenanganan: TDataSource;
+    ZQueryPenanganan: TZQuery;
+    ZQueryLogin: TZQuery;
+    ZQueryUser: TZQuery;
+    DataSourceUser: TDataSource;
+    ZQueryTambahDesa: TZQuery;
+    DataSourceTambahDesa: TDataSource;
+    ZQueryTambahKecamatan: TZQuery;
+    DataSourceTambahKecamatan: TDataSource;
+    ZQueryTambahLokasi: TZQuery;
+    DataSourceTambahLokasi: TDataSource;
+    ZQueryTambahStatus: TZQuery;
+    DataSourceTambahStatus: TDataSource;
+    ZQueryTambahPerangkat: TZQuery;
+    DataSourceTambahPerangkat: TDataSource;
+    DataSourceTambahJenisTempatIbadah: TDataSource;
+    ZQueryTambahJenisTempatIbadah: TZQuery;
+    ZQueryLog: TZQuery;
+    DataSourceLog: TDataSource;
+    ZQueryLogid_log: TIntegerField;
+    ZQueryLogaktivitas: TWideMemoField;
+    ZQueryLogtanggal: TDateTimeField;
+    ZQueryLogadmin: TWideStringField;
+    procedure ZQueryLogaktivitasGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TDataModule1.ZQueryLogaktivitasGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+Text := Copy( DataModule1.ZQueryLog.FieldByName('aktivitas').AsString, 1, 200);
+end;
+
+end.

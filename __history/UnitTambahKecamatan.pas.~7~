@@ -1,0 +1,220 @@
+unit UnitTambahKecamatan;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormTambahKecamatan = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure Edit2Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahKecamatan: TFormTambahKecamatan;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormTambahKecamatan.Button1Click(Sender: TObject);
+begin
+//  if edit1.Text = '' then
+//    begin
+//      Showmessage('kecamatan masih kosong');
+//      edit1.SetFocus;
+//    end else
+//    begin
+//      with DataModule1.ZQueryTambahKecamatan do
+//      begin
+//        Append;
+//        FieldByname('kecamatan').AsString := Edit1.Text;
+//        Post;
+//        Showmessage('Data berhasil ditambahkan');
+//        Edit1.Clear;
+//      end;
+//    end;
+
+if (edit1.Text <> '') then
+      begin
+      try
+        DataModule1.ZQueryTambahKecamatan.SQL.Text := 'INSERT INTO kecamatan (kecamatan)' + 'VALUES (:kecamatan)';
+        DataModule1.ZQueryTambahKecamatan.Params.ParamByName('kecamatan').Value := Edit1.Text;
+        DataModule1.ZQueryTambahKecamatan.ExecSQL;
+
+        DataModule1.ZQueryTambahKecamatan.Close;
+        DataModule1.ZQueryTambahKecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+        DataModule1.ZQueryTambahKecamatan.Open;
+
+        Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+        ShowMessage('Data berhasil disimpan');
+        Edit1.Clear;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('Kecamatan masih kosong');
+      edit1.SetFocus;
+    end
+end;
+
+procedure TFormTambahKecamatan.Button2Click(Sender: TObject);
+begin
+//  if edit1.Text = '' then
+//    begin
+//      Showmessage('kecamatan masih kosong');
+//      edit1.SetFocus;
+//    end else
+//    begin
+//      with DataModule1.ZQueryTambahKecamatan do
+//      begin
+//        Edit;
+//        FieldByname('kecamatan').AsString := Edit1.Text;
+//        Post;
+//        Showmessage('Data berhasil diubah');
+//        Edit1.Clear;
+//      end;
+//    end;
+
+if (edit1.Text <> '') then
+      begin
+      try
+        var IDKecamatan: Integer := DataModule1.ZQueryTambahKecamatan.FieldByName('id_kecamatan').AsInteger;
+
+        DataModule1.ZQueryTambahKecamatan.SQL.Text := 'UPDATE kecamatan SET kecamatan = :kecamatan WHERE id_kecamatan = :id_kecamatan ';
+        DataModule1.ZQueryTambahKecamatan.Params.ParamByName('kecamatan').Value := Edit1.Text;
+        DataModule1.ZQueryTambahKecamatan.Params.ParamByName('id_kecamatan').Value := IDKecamatan;
+        DataModule1.ZQueryTambahKecamatan.ExecSQL;
+
+        DataModule1.ZQueryTambahKecamatan.Close;
+        DataModule1.ZQueryTambahKecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+        DataModule1.ZQueryTambahKecamatan.Open;
+
+        ShowMessage('Data berhasil diubah');
+        Edit1.Clear;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('Kecamatan masih kosong');
+      edit1.SetFocus;
+    end
+end;
+
+procedure TFormTambahKecamatan.Button3Click(Sender: TObject);
+begin
+//if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+//  begin
+//    DataModule1.ZQueryTambahkecamatan.Delete;
+//
+//    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'ALTER TABLE kecamatan AUTO_INCREMENT = 1';
+//    DataModule1.ZQueryTambahkecamatan.ExecSQL;
+//
+//    DataModule1.ZQueryTambahkecamatan.Close;
+//    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+//    DataModule1.ZQueryTambahkecamatan .Open;
+//    ShowMessage('Data berhasil dihapus');
+//
+//    Edit1.Clear;
+//  end;
+
+try
+  if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahkecamatan.FieldByName('kecamatan').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    var IDKecamatan: Integer := DataModule1.ZQueryTambahkecamatan.FieldByName('id_kecamatan').AsInteger;
+
+    if not DataModule1.ZQueryTambahkecamatan.IsEmpty then
+    begin
+    DataModule1.ZQueryTambahkecamatan.Close;
+
+    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'DELETE FROM kecamatan WHERE id_kecamatan = :id_kecamatan';
+    DataModule1.ZQueryTambahkecamatan.Params.ParamByName('id_kecamatan').Value := IDKecamatan;
+    DataModule1.ZQueryTambahkecamatan.ExecSQL;
+
+    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'ALTER TABLE kecamatan AUTO_INCREMENT = 1';
+    DataModule1.ZQueryTambahkecamatan.ExecSQL;
+
+    DataModule1.ZQueryTambahkecamatan.Close;
+    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+    DataModule1.ZQueryTambahkecamatan.Open;
+    Label4.Caption := IntToStr(DataModule1.ZQueryTambahkecamatan.RecordCount);
+    ShowMessage('Data berhasil dihapus');
+    Edit1.Clear;
+  end
+  else
+    begin
+      ShowMessage('Data tidak ditemukan');
+    end;
+  end;
+  except
+    ShowMessage('Terjadi kesalahan saat menghapus data');
+end;
+end;
+
+procedure TFormTambahKecamatan.Button4Click(Sender: TObject);
+begin
+  Edit1.Clear;
+end;
+
+procedure TFormTambahKecamatan.DBGrid1CellClick(Column: TColumn);
+begin
+  Edit1.Text := DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString;
+end;
+
+procedure TFormTambahKecamatan.Edit2Change(Sender: TObject);
+begin
+    DataModule1.ZQueryTambahKecamatan.Close;
+    DataModule1.ZQueryTambahKecamatan.SQL.Text := 'SELECT * FROM kecamatan WHERE kecamatan LIKE :Search';
+    DataModule1.ZQueryTambahKecamatan.ParamByName('Search').AsString := '%' + Edit2.Text + '%';
+    DataModule1.ZQueryTambahKecamatan.Open;
+
+    Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+procedure TFormTambahKecamatan.FormShow(Sender: TObject);
+begin
+  DataModule1.ZConnection1.Connected := True;
+  DataModule1.ZQueryTambahKecamatan.Active := True;
+
+  Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+end.

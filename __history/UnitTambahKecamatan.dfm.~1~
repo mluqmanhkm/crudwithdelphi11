@@ -1,0 +1,14 @@
+object FormTambahKecamatan: TFormTambahKecamatan
+  Left = 0
+  Top = 0
+  Caption = 'FormTambahKecamatan'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+end

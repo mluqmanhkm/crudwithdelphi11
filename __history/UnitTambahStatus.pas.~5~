@@ -1,0 +1,106 @@
+unit UnitTambahStatus;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormTambahStatus = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    DBGrid1: TDBGrid;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahStatus: TFormTambahStatus;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormTambahStatus.Button1Click(Sender: TObject);
+begin
+  if edit1.Text = '' then
+    begin
+      Showmessage('status masih kosong');
+      edit1.SetFocus;
+    end else
+    begin
+      with DataModule1.ZQueryTambahStatus do
+      begin
+        Append;
+        FieldByname('status').AsString := Edit1.Text;
+        Post;
+        Showmessage('Data berhasil ditambahkan');
+        Edit1.Clear;
+      end;
+    end;
+end;
+
+procedure TFormTambahStatus.Button2Click(Sender: TObject);
+begin
+  if edit1.Text = '' then
+    begin
+      Showmessage('status masih kosong');
+      edit1.SetFocus;
+    end else
+    begin
+      with DataModule1.ZQueryTambahStatus do
+      begin
+        Edit;
+        FieldByname('status').AsString := Edit1.Text;
+        Post;
+        Showmessage('Data berhasil ditambahkan');
+        Edit1.Clear;
+      end;
+    end;
+end;
+
+procedure TFormTambahStatus.Button3Click(Sender: TObject);
+begin
+if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahStatus.FieldByName('status').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    DataModule1.ZQueryTambahStatus.Delete;
+
+    DataModule1.ZQueryTambahStatus.SQL.Text := 'ALTER TABLE status AUTO_INCREMENT = 1';
+    DataModule1.ZQueryTambahStatus.ExecSQL;
+
+    DataModule1.ZQueryTambahStatus.Close;
+    DataModule1.ZQueryTambahStatus.SQL.Text := 'SELECT * FROM status';
+    DataModule1.ZQueryTambahStatus .Open;
+    ShowMessage('Data berhasil dihapus');
+
+    Edit1.Clear;
+  end;
+end;
+
+procedure TFormTambahStatus.Button4Click(Sender: TObject);
+begin
+Edit1.Clear;
+end;
+
+procedure TFormTambahStatus.DBGrid1CellClick(Column: TColumn);
+begin
+Edit1.Text := DataModule1.ZQueryTambahStatus.FieldByName('status').AsString;
+end;
+
+end.

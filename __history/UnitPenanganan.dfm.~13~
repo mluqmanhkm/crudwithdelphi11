@@ -1,0 +1,69 @@
+object FormPenanganan: TFormPenanganan
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'FormPenanganan'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  WindowState = wsMaximized
+  OnShow = FormShow
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    TabOrder = 0
+    ExplicitLeft = 104
+    ExplicitTop = 8
+    object Label1: TLabel
+      Left = 144
+      Top = 96
+      Width = 88
+      Height = 15
+      Caption = 'Nama Perangkat'
+    end
+    object Label2: TLabel
+      Left = 144
+      Top = 144
+      Width = 98
+      Height = 15
+      Caption = 'Tanggal Kerusakan'
+    end
+    object Label3: TLabel
+      Left = 144
+      Top = 192
+      Width = 54
+      Height = 15
+      Caption = 'Kerusakan'
+    end
+    object DBGrid1: TDBGrid
+      Left = 113
+      Top = 345
+      Width = 1257
+      Height = 169
+      DataSource = DataModule1.DataSourcePenanganan
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -12
+      TitleFont.Name = 'Segoe UI'
+      TitleFont.Style = []
+    end
+    object Edit1: TEdit
+      Left = 256
+      Top = 93
+      Width = 121
+      Height = 23
+      TabOrder = 1
+    end
+  end
+end

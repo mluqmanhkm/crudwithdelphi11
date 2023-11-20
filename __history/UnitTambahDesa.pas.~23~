@@ -1,0 +1,242 @@
+unit UnitTambahDesa;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormTambahDesa = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    Edit1: TEdit;
+    Label1: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Edit2Change(Sender: TObject);
+    procedure Edit1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahDesa: TFormTambahDesa;
+  Username, Password: String;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule, UnitLogin;
+
+procedure LogActivity(aktivitas, admin: string);
+begin
+  DataModule1.ZQueryLog.SQL.Text := 'INSERT INTO log (aktivitas, tanggal, admin) VALUES (:aktivitas, :tanggal, :admin)';
+  DataModule1.ZQueryLog.ParamByName('aktivitas').AsString := aktivitas;
+  DataModule1.ZQueryLog.ParamByName('tanggal').AsDateTime := Now;
+  DataModule1.ZQueryLog.ParamByName('admin').AsString := admin;
+  DataModule1.ZQueryLog.ExecSQL;
+
+  DataModule1.ZQueryLog.Close;
+  DataModule1.ZQueryLog.SQL.Text := 'SELECT * FROM log';
+  DataModule1.ZQueryLog.Open;
+end;
+
+procedure TFormTambahDesa.Button1Click(Sender: TObject);
+begin
+
+if (edit1.Text <> '') then
+      begin
+      try
+        DataModule1.ZQueryTambahDesa.SQL.Text := 'INSERT INTO desa (desa)' + 'VALUES (:desa)';
+        DataModule1.ZQueryTambahDesa.Params.ParamByName('desa').Value := Edit1.Text;
+        DataModule1.ZQueryTambahDesa.ExecSQL;
+
+        DataModule1.ZQueryTambahDesa.Close;
+        DataModule1.ZQueryTambahDesa.SQL.Text := 'SELECT * FROM desa';
+        DataModule1.ZQueryTambahDesa.Open;
+
+        Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+
+        Username := UnitLogin.FormLogin.Edit1.Text;
+        Password := UnitLogin.FormLogin.Edit2.Text;
+
+        DataModule1.ZQueryUser.SQL.Text := 'SELECT * FROM akun WHERE username = :username AND password = :password';
+        DataModule1.ZQueryUser.Params.ParamByName('username').Value := Username;
+        DataModule1.ZQueryUser.Params.ParamByName('password').Value := Password;
+        DataModule1.ZQueryUser.Open;
+
+        LogActivity('Menambah data desa ' + DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString, username);
+
+        ShowMessage('Data berhasil disimpan');
+        Edit1.Clear;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('Desa masih kosong');
+      edit1.SetFocus;
+    end
+end;
+
+procedure TFormTambahDesa.Button2Click(Sender: TObject);
+var
+  NewValue, OldValue : string;
+begin
+if (edit1.Text <> '') then
+      begin
+      try
+        var IDDesa: Integer := DataModule1.ZQueryTambahDesa.FieldByName('id_desa').AsInteger;
+
+        DataModule1.ZQueryTambahDesa.SQL.Text := 'UPDATE desa SET desa = :desa WHERE id_desa = :id_desa ';
+        DataModule1.ZQueryTambahDesa.Params.ParamByName('desa').Value := Edit1.Text;
+        DataModule1.ZQueryTambahDesa.Params.ParamByName('id_desa').Value := IDDesa;
+        DataModule1.ZQueryTambahDesa.ExecSQL;
+
+        DataModule1.ZQueryTambahDesa.Close;
+        DataModule1.ZQueryTambahDesa.SQL.Text := 'SELECT * FROM desa';
+        DataModule1.ZQueryTambahDesa.Open;
+
+        Username := UnitLogin.FormLogin.Edit1.Text;
+        Password := UnitLogin.FormLogin.Edit2.Text;
+
+        DataModule1.ZQueryUser.SQL.Text := 'SELECT * FROM akun WHERE username = :username AND password = :password';
+        DataModule1.ZQueryUser.Params.ParamByName('username').Value := Username;
+        DataModule1.ZQueryUser.Params.ParamByName('password').Value := Password;
+        DataModule1.ZQueryUser.Open;
+
+        NewValue := Edit1.Text;
+        OldValue := DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString;
+
+        LogActivity('Mengubah data desa menjadi ' + OldValue + ' ' + NewValue , username);
+
+        ShowMessage('Data berhasil diubah');
+        Edit1.Clear;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('Desa masih kosong');
+      edit1.SetFocus;
+    end
+end;
+
+procedure TFormTambahDesa.Button3Click(Sender: TObject);
+var
+  DeletedData: String;
+begin
+try
+  DeletedData := DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString;
+
+  if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    var IDDesa: Integer := DataModule1.ZQueryTambahDesa.FieldByName('id_desa').AsInteger;
+
+    if not DataModule1.ZQueryTambahDesa.IsEmpty then
+    begin
+    DataModule1.ZQueryTambahDesa.Close;
+
+    DataModule1.ZQueryTambahDesa.SQL.Text := 'DELETE FROM desa WHERE id_desa = :id_desa';
+    DataModule1.ZQueryTambahDesa.Params.ParamByName('id_desa').Value := IDDesa;
+    DataModule1.ZQueryTambahDesa.ExecSQL;
+
+    DataModule1.ZQueryTambahDesa.SQL.Text := 'ALTER TABLE desa AUTO_INCREMENT = 1';
+    DataModule1.ZQueryTambahDesa.ExecSQL;
+
+    DataModule1.ZQueryTambahDesa.Close;
+    DataModule1.ZQueryTambahDesa.SQL.Text := 'SELECT * FROM desa';
+    DataModule1.ZQueryTambahDesa.Open;
+    Label4.Caption := IntToStr(DataModule1.ZQueryTambahDesa.RecordCount);
+
+    Username := UnitLogin.FormLogin.Edit1.Text;
+    Password := UnitLogin.FormLogin.Edit2.Text;
+
+    DataModule1.ZQueryUser.SQL.Text := 'SELECT * FROM akun WHERE username = :username AND password = :password';
+    DataModule1.ZQueryUser.Params.ParamByName('username').Value := Username;
+    DataModule1.ZQueryUser.Params.ParamByName('password').Value := Password;
+    DataModule1.ZQueryUser.Open;
+
+    LogActivity('Menghapus data desa ' + DeletedData, username);
+
+    ShowMessage('Data berhasil dihapus');
+    Edit1.Clear;
+  end
+  else
+    begin
+      ShowMessage('Data tidak ditemukan');
+    end;
+  end;
+  except
+    ShowMessage('Terjadi kesalahan saat menghapus data');
+end;
+end;
+
+procedure TFormTambahDesa.Button4Click(Sender: TObject);
+begin
+  Edit1.Clear;
+end;
+
+procedure TFormTambahDesa.DBGrid1CellClick(Column: TColumn);
+begin
+Edit1.Text := DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString;
+Edit1.SetFocus;
+end;
+
+procedure TFormTambahDesa.Edit1KeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+
+if Key = VK_RETURN then
+  begin
+
+  end;
+
+end;
+
+procedure TFormTambahDesa.Edit2Change(Sender: TObject);
+begin
+    DataModule1.ZQueryTambahDesa.Close;
+    DataModule1.ZQueryTambahDesa.SQL.Text := 'SELECT * FROM desa WHERE desa LIKE :Search';
+    DataModule1.ZQueryTambahDesa.ParamByName('Search').AsString := '%' + Edit2.Text + '%';
+    DataModule1.ZQueryTambahDesa.Open;
+
+    Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+procedure TFormTambahDesa.FormShow(Sender: TObject);
+begin
+  DataModule1.ZConnection1.Connected := True;
+  DataModule1.ZQueryTambahDesa.Active := True;
+
+  Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+end.

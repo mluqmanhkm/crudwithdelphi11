@@ -1,0 +1,127 @@
+unit UnitTambahKecamatan;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormTambahKecamatan = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label2: TLabel;
+    Edit2: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure Edit2Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahKecamatan: TFormTambahKecamatan;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormTambahKecamatan.Button1Click(Sender: TObject);
+begin
+  if edit1.Text = '' then
+    begin
+      Showmessage('kecamatan masih kosong');
+      edit1.SetFocus;
+    end else
+    begin
+      with DataModule1.ZQueryTambahKecamatan do
+      begin
+        Append;
+        FieldByname('kecamatan').AsString := Edit1.Text;
+        Post;
+        Showmessage('Data berhasil ditambahkan');
+        Edit1.Clear;
+      end;
+    end;
+end;
+
+procedure TFormTambahKecamatan.Button2Click(Sender: TObject);
+begin
+  if edit1.Text = '' then
+    begin
+      Showmessage('kecamatan masih kosong');
+      edit1.SetFocus;
+    end else
+    begin
+      with DataModule1.ZQueryTambahKecamatan do
+      begin
+        Edit;
+        FieldByname('kecamatan').AsString := Edit1.Text;
+        Post;
+        Showmessage('Data berhasil diubah');
+        Edit1.Clear;
+      end;
+    end;
+end;
+
+procedure TFormTambahKecamatan.Button3Click(Sender: TObject);
+begin
+if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    DataModule1.ZQueryTambahkecamatan.Delete;
+
+    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'ALTER TABLE kecamatan AUTO_INCREMENT = 1';
+    DataModule1.ZQueryTambahkecamatan.ExecSQL;
+
+    DataModule1.ZQueryTambahkecamatan.Close;
+    DataModule1.ZQueryTambahkecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+    DataModule1.ZQueryTambahkecamatan .Open;
+    ShowMessage('Data berhasil dihapus');
+
+    Edit1.Clear;
+  end;
+end;
+
+procedure TFormTambahKecamatan.Button4Click(Sender: TObject);
+begin
+  Edit1.Clear;
+end;
+
+procedure TFormTambahKecamatan.DBGrid1CellClick(Column: TColumn);
+begin
+  Edit1.Text := DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString;
+end;
+
+procedure TFormTambahKecamatan.Edit2Change(Sender: TObject);
+begin
+    DataModule1.ZQueryTambahKecamatan.Close;
+    DataModule1.ZQueryTambahKecamatan.SQL.Text := 'SELECT * FROM kecamatan WHERE kecamatan LIKE :Search';
+    DataModule1.ZQueryTambahKecamatan.ParamByName('Search').AsString := '%' + Edit2.Text + '%';
+    DataModule1.ZQueryTambahKecamatan.Open;
+
+    Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+procedure TFormTambahKecamatan.FormShow(Sender: TObject);
+begin
+  Label4.Caption := IntToStr(DBGrid1.DataSource.DataSet.RecordCount);
+end;
+
+end.

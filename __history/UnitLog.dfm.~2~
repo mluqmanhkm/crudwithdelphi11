@@ -1,0 +1,34 @@
+object FormLog: TFormLog
+  Left = 0
+  Top = 0
+  Align = alClient
+  BorderStyle = bsNone
+  Caption = 'FormLog'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  WindowState = wsMaximized
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 640
+    ExplicitHeight = 480
+    object Label1: TLabel
+      Left = 264
+      Top = 208
+      Width = 63
+      Height = 15
+      Caption = 'log aktivitas'
+    end
+  end
+end

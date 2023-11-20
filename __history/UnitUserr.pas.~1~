@@ -1,0 +1,119 @@
+unit UnitUser;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, ZAbstractConnection,
+  ZConnection, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormUser = class(TForm)
+    Panel1: TPanel;
+    Username: TLabel;
+    Password: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Button2: TButton;
+    Button3: TButton;
+    Button6: TButton;
+    Button4: TButton;
+    DBGrid1: TDBGrid;
+    ZConnection1: TZConnection;
+    ZQuery1: TZQuery;
+    DataSource1: TDataSource;
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormUser: TFormUser;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFormUser.Button2Click(Sender: TObject);
+begin
+if edit1.Text = '' then
+  begin
+    Showmessage('Username masih kosong');
+    edit1.SetFocus;
+  end else
+  if edit2.Text = '' then
+  begin
+    Showmessage('Password masih kosong');
+    edit2.SetFocus;
+  end else
+  begin
+    with ZQuery1 do
+    begin
+      Append;
+      FieldByname('username').AsString := Edit1.Text;
+      FieldByName('password').AsString := Edit2.Text;
+      FieldByName('id_account').AsInteger :=Strtoint(IntToStr(ZQuery1.RecordCount+1));
+      Post;
+      Showmessage('Data berhasil ditambahkan');
+      Edit1.Clear;
+      Edit2.Clear;
+    end;
+end;
+end;
+
+procedure TFormUser.Button3Click(Sender: TObject);
+begin
+     if edit1.Text = '' then
+  begin
+    Showmessage('Username masih kosong');
+    edit1.SetFocus;
+  end else
+  if edit2.Text = '' then
+  begin
+    Showmessage('Password masih kosong');
+    edit2.SetFocus;
+  end else
+  begin
+    with ZQuery1 do
+    begin
+      Edit;
+      FieldByname('username').AsString := Edit1.Text;
+      FieldByName('password').AsString := Edit2.Text;
+      Post;
+      Showmessage('Data berhasil diubah');
+      Edit1.Clear;
+      Edit2.Clear;
+    end;
+end;
+end;
+
+procedure TFormUser.Button4Click(Sender: TObject);
+begin
+if messageDlg('Apakah yakin data '+ ZQuery1.FieldByName('username').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    ZQuery1.Delete;
+    Edit1.Clear;
+    Edit2.Clear;
+  end;
+end;
+
+procedure TFormUser.Button6Click(Sender: TObject);
+begin
+  Edit1.Clear;
+  Edit2.Clear;
+end;
+
+procedure TFormUser.DBGrid1CellClick(Column: TColumn);
+begin
+  Edit1.Text := ZQuery1.FieldByName('username').AsString;
+  Edit2.Text:=ZQuery1.FieldByName('password').AsString;
+end;
+
+end.

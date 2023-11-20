@@ -1,0 +1,88 @@
+object FormLogin: TFormLogin
+  Left = 0
+  Top = 0
+  Caption = 'FormLogin'
+  ClientHeight = 440
+  ClientWidth = 624
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Position = poScreenCenter
+  OnClose = LoginClose
+  OnCreate = FormCreate
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = -8
+    Top = 0
+    Width = 641
+    Height = 441
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 304
+      Top = 88
+      Width = 30
+      Height = 15
+      Caption = 'Login'
+    end
+    object Label2: TLabel
+      Left = 171
+      Top = 152
+      Width = 53
+      Height = 15
+      Caption = 'Username'
+    end
+    object Label3: TLabel
+      Left = 171
+      Top = 224
+      Width = 50
+      Height = 15
+      Caption = 'Password'
+    end
+    object Edit1: TEdit
+      Left = 288
+      Top = 149
+      Width = 121
+      Height = 23
+      TabOrder = 0
+    end
+    object Edit2: TEdit
+      Left = 288
+      Top = 221
+      Width = 121
+      Height = 23
+      PasswordChar = '*'
+      TabOrder = 1
+    end
+    object Button1: TButton
+      Left = 184
+      Top = 336
+      Width = 75
+      Height = 25
+      Caption = 'Keluar'
+      TabOrder = 2
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 374
+      Top = 336
+      Width = 75
+      Height = 25
+      Caption = 'Login'
+      Default = True
+      TabOrder = 3
+      OnClick = Button2Click
+    end
+    object CheckBox1: TCheckBox
+      Left = 288
+      Top = 272
+      Width = 105
+      Height = 17
+      Caption = 'Lihat Password'
+      TabOrder = 4
+      OnClick = CheckBox1Click
+    end
+  end
+end

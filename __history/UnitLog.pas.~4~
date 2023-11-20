@@ -1,0 +1,68 @@
+unit UnitLog;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, ZAbstractConnection,
+  ZConnection, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TFormLog = class(TForm)
+    Panel1: TPanel;
+    ZConnection1: TZConnection;
+    DBGrid1: TDBGrid;
+    Hapus: TButton;
+    procedure HapusClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormLog: TFormLog;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormLog.HapusClick(Sender: TObject);
+begin
+try
+  if messageDlg('Apakah yakin data '+ DataModule1.ZQueryLog.FieldByName('id_log').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    var IDLog: Integer := DataModule1.ZQueryLog.FieldByName('id_log').AsInteger;
+
+    if not DataModule1.ZQueryLog.IsEmpty then
+    begin
+    DataModule1.ZQueryLog.Close;
+
+    DataModule1.ZQueryLog.SQL.Text := 'DELETE FROM log WHERE id_log = :id_log';
+    DataModule1.ZQueryLog.Params.ParamByName('id_log').Value := IDLog;
+    DataModule1.ZQueryLog.ExecSQL;
+
+    DataModule1.ZQueryLog.SQL.Text := 'ALTER TABLE log AUTO_INCREMENT = 1';
+    DataModule1.ZQueryLog.ExecSQL;
+
+    DataModule1.ZQueryLog.Close;
+    DataModule1.ZQueryLog.SQL.Text := 'SELECT * FROM log';
+    DataModule1.ZQueryLog.Open;
+//    Label8.Caption := IntToStr(DataModule1.ZQueryTambahLokasi.RecordCount);
+
+    ShowMessage('Data berhasil dihapus');
+  end
+  else
+    begin
+      ShowMessage('Data tidak ditemukan');
+    end;
+  end;
+  except
+    ShowMessage('Terjadi kesalahan saat menghapus data');
+end;
+end;
+
+end.

@@ -1,0 +1,434 @@
+unit UnitTambahLokasi;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls;
+
+type
+  TFormTambahLokasi = class(TForm)
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
+    Label6: TLabel;
+    Edit4: TEdit;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    ComboBox3: TComboBox;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure DBGrid1CellClick(Column: TColumn);
+    procedure ComboBox1DropDown(Sender: TObject);
+    procedure ComboBox2DropDown(Sender: TObject);
+    procedure Edit4Change(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure ComboBox3DropDown(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormTambahLokasi: TFormTambahLokasi;
+
+implementation
+
+{$R *.dfm}
+
+uses UnitDataModule;
+
+procedure TFormTambahLokasi.Button1Click(Sender: TObject);
+  begin
+    if (edit1.Text <> '') and (edit2.Text <> '') and (edit3.Text <> '') and (ComboBox1.ItemIndex >= 0) and (ComboBox2.ItemIndex >= 0) and (ComboBox3.ItemIndex >= 0) then
+      begin
+      try
+//      DataModule1.ZQueryTambahLokasi.Close;
+        DataModule1.ZQueryTambahLokasi.SQL.Text := 'INSERT INTO lokasi2 (nama_tempat, koordinat, alamat, id_desa, id_kecamatan, id_jenis_tempat_ibadah)' + 'VALUES (:nama_tempat, :koordinat, :alamat, :id_desa, :id_kecamatan, :id_jenis_tempat_ibadah)';
+//        DataModule1.ZQueryTambahLokasi.Open;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('nama_tempat').Value := Edit1.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('koordinat').Value := Edit2.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('alamat').Value := Edit3.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_desa').Value := Integer(ComboBox1.Items.Objects[ComboBox1.ItemIndex]);
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_kecamatan').Value := Integer(ComboBox2.Items.Objects[ComboBox2.ItemIndex]);
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_jenis_tempat_ibadah').Value := Integer(ComboBox3.Items.Objects[ComboBox3.ItemIndex]);
+//        DataModule1.ZQueryTambahLokasi.Open;
+//        DataModule1.ZQueryTambahLokasi.Transaction.StartTransaction;
+        DataModule1.ZQueryTambahLokasi.ExecSQL;
+        DataModule1.ZQueryTambahLokasi.Close;
+        DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT lokasi2.id_lokasi, lokasi2.nama_tempat, lokasi2.koordinat, lokasi2.alamat, desa.desa, kecamatan.kecamatan, jenis_tempat_ibadah.jenis_tempat_ibadah' +
+        ' FROM lokasi2'+
+        ' INNER JOIN desa ON lokasi2.id_desa=desa.id_desa' +
+        ' INNER JOIN kecamatan ON lokasi2.id_kecamatan=kecamatan.id_kecamatan' +
+        ' INNER JOIN jenis_tempat_ibadah ON lokasi2.id_jenis_tempat_ibadah=jenis_tempat_ibadah.id_jenis_tempat_ibadah';
+//        DataModule1.ZQueryTambahLokasi.Params.ParamByName('lokasiID').AsInteger := 83;
+        DataModule1.ZQueryTambahLokasi.Open;
+        Label8.Caption := IntToStr(DataModule1.ZQueryTambahLokasi.RecordCount);
+//        Result := DataModule1.ZQueryTambahLokasi;
+//        if not DataModule1.ZQueryTambahLokasi.Active then
+//        DataModule1.ZQueryTambahLokasi.Open;
+//        DataModule1.ZQueryTambahLokasi.Refresh;
+//        DBGrid1.DataSource.DataSet := DataModule1.ZQueryTambahLokasi;
+//        DataModule1.ZQueryTambahLokasi.Transaction.Commit;
+        ShowMessage('Data berhasil disimpan');
+//        DataModule1.ZQueryTambahLokasi.Close;
+//        DataModule1.ZQueryTambahLokasi.CommitUpdates;
+        Edit1.Clear;
+        Edit2.Clear;
+        Edit3.Clear;
+        ComboBox1.ItemIndex := -1;
+        ComboBox2.ItemIndex := -1;
+        ComboBox3.ItemIndex := -1;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('nama tempat masih kosong');
+      edit1.SetFocus;
+    end else
+    if edit2.Text = '' then
+    begin
+      Showmessage('koordinat masih kosong');
+      edit2.SetFocus;
+    end else
+    if edit3.Text = '' then
+    begin
+      Showmessage('alamat masih kosong');
+      edit3.SetFocus;
+    end else
+    if ComboBox1.Text = '' then
+    begin
+      Showmessage('desa masih kosong');
+      ComboBox1.SetFocus;
+    end else
+     if ComboBox2.Text = '' then
+    begin
+      Showmessage('kecamatan masih kosong');
+      ComboBox2.SetFocus;
+    end else
+    if ComboBox3.Text = '' then
+    begin
+      Showmessage('jenis tempat ibadah masih kosong');
+      ComboBox3.SetFocus;
+    end;
+  end;
+
+procedure TFormTambahLokasi.Button2Click(Sender: TObject);
+begin
+
+if (edit1.Text <> '') and (edit2.Text <> '') and (edit3.Text <> '') and (ComboBox1.ItemIndex >= 0) and (ComboBox2.ItemIndex >= 0) and (ComboBox3.ItemIndex >= 0) then
+      begin
+      try
+        var IDLokasi: Integer := DataModule1.ZQueryTambahLokasi.FieldByName('id_lokasi').AsInteger;
+
+        DataModule1.ZQueryTambahLokasi.SQL.Text := 'UPDATE lokasi2 SET nama_tempat = :nama_tempat, koordinat = :koordinat, alamat = :alamat, id_desa = :id_desa, id_kecamatan = :id_kecamatan, id_jenis_tempat_ibadah = :id_jenis_tempat_ibadah WHERE id_lokasi = :id_lokasi';
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('nama_tempat').Value := Edit1.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('koordinat').Value := Edit2.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('alamat').Value := Edit3.Text;
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_desa').Value := Integer(ComboBox1.Items.Objects[ComboBox1.ItemIndex]);
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_kecamatan').Value := Integer(ComboBox2.Items.Objects[ComboBox2.ItemIndex]);
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_jenis_tempat_ibadah').Value := Integer(ComboBox3.Items.Objects[ComboBox3.ItemIndex]);
+        DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_lokasi').Value := IDLokasi;
+        DataModule1.ZQueryTambahLokasi.ExecSQL;
+
+        DataModule1.ZQueryTambahLokasi.Close;
+        DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT lokasi2.id_lokasi, lokasi2.nama_tempat, lokasi2.koordinat, lokasi2.alamat, desa.desa, kecamatan.kecamatan, jenis_tempat_ibadah.jenis_tempat_ibadah' +
+        ' FROM lokasi2'+
+        ' INNER JOIN desa ON lokasi2.id_desa=desa.id_desa' +
+        ' INNER JOIN kecamatan ON lokasi2.id_kecamatan=kecamatan.id_kecamatan' +
+        ' INNER JOIN jenis_tempat_ibadah ON lokasi2.id_jenis_tempat_ibadah=jenis_tempat_ibadah.id_jenis_tempat_ibadah';
+        DataModule1.ZQueryTambahLokasi.Open;
+        ShowMessage('Data berhasil diubah');
+        Edit1.Clear;
+        Edit2.Clear;
+        Edit3.Clear;
+        ComboBox1.ItemIndex := -1;
+        ComboBox2.ItemIndex := -1;
+        ComboBox3.ItemIndex := -1;
+        except
+          on E: Exception do
+          begin
+            ShowMessage('Error: ' + E.Message);
+          end;
+        end;
+      end
+    else
+    if edit1.Text = '' then
+    begin
+      Showmessage('nama tempat masih kosong');
+      edit1.SetFocus;
+    end else
+    if edit2.Text = '' then
+    begin
+      Showmessage('koordinat masih kosong');
+      edit2.SetFocus;
+    end else
+    if edit3.Text = '' then
+    begin
+      Showmessage('alamat masih kosong');
+      edit3.SetFocus;
+    end else
+    if ComboBox1.Text = '' then
+    begin
+      Showmessage('desa masih kosong');
+      ComboBox1.SetFocus;
+    end else
+    if ComboBox2.Text = '' then
+    begin
+      Showmessage('kecamatan masih kosong');
+      ComboBox2.SetFocus;
+    end else
+    if ComboBox3.Text = '' then
+    begin
+      Showmessage('jenis tempat ibadah masih kosong');
+      ComboBox3.SetFocus;
+    end;
+  end;
+
+procedure TFormTambahLokasi.Button3Click(Sender: TObject);
+begin
+  Edit1.Clear;
+  Edit2.Clear;
+  Edit3.Clear;
+  ComboBox1.ItemIndex := -1;
+  ComboBox2.ItemIndex := -1;
+  ComboBox3.ItemIndex := -1;
+end;
+
+procedure TFormTambahLokasi.Button4Click(Sender: TObject);
+begin
+  try
+  if messageDlg('Apakah yakin data '+ DataModule1.ZQueryTambahLokasi.FieldByName('nama_tempat').AsString+' akan dihapus?',mtConfirmation,[Mbyes,Mbno],0)=mryes then
+  begin
+    var IDLokasi: Integer := DataModule1.ZQueryTambahLokasi.FieldByName('id_lokasi').AsInteger;
+
+//    DataModule1.ZQueryTambahLokasi.Close;
+//    DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT id_lokasi FROM lokasi2 WHERE id_lokasi = :id_lokasi';
+//    DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_lokasi').Value := IDLokasi;
+//    DataModule1.ZQueryTambahLokasi.Open;
+
+    if not DataModule1.ZQueryTambahLokasi.IsEmpty then
+    begin
+    DataModule1.ZQueryTambahLokasi.Close;
+
+    DataModule1.ZQueryTambahLokasi.SQL.Text := 'DELETE FROM lokasi2 WHERE id_lokasi = :id_lokasi';
+    DataModule1.ZQueryTambahLokasi.Params.ParamByName('id_lokasi').Value := IDLokasi;
+    DataModule1.ZQueryTambahLokasi.ExecSQL;
+
+    DataModule1.ZQueryTambahLokasi.SQL.Text := 'ALTER TABLE lokasi2 AUTO_INCREMENT = 1';
+    DataModule1.ZQueryTambahLokasi.ExecSQL;
+
+    DataModule1.ZQueryTambahLokasi.Close;
+    DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT lokasi2.id_lokasi, lokasi2.nama_tempat, lokasi2.koordinat, lokasi2.alamat, desa.desa, kecamatan.kecamatan, jenis_tempat_ibadah.jenis_tempat_ibadah' +
+        ' FROM lokasi2' +
+        ' INNER JOIN desa ON lokasi2.id_desa=desa.id_desa' +
+        ' INNER JOIN kecamatan ON lokasi2.id_kecamatan=kecamatan.id_kecamatan' +
+        ' INNER JOIN jenis_tempat_ibadah ON lokasi2.id_jenis_tempat_ibadah=jenis_tempat_ibadah.id_jenis_tempat_ibadah';
+    DataModule1.ZQueryTambahLokasi.Open;
+    Label8.Caption := IntToStr(DataModule1.ZQueryTambahLokasi.RecordCount);
+
+    ShowMessage('Data berhasil dihapus');
+    Edit1.Clear;
+    Edit2.Clear;
+    Edit3.Clear;
+    ComboBox1.ItemIndex := -1;
+    ComboBox2.ItemIndex := -1;
+    ComboBox3.ItemIndex := -1;
+  end
+  else
+    begin
+      ShowMessage('Data tidak ditemukan');
+    end;
+  end;
+  except
+    ShowMessage('Terjadi kesalahan saat menghapus data');
+end;
+
+end;
+
+procedure TFormTambahLokasi.ComboBox1DropDown(Sender: TObject);
+begin
+//  DataModule1.ZConnection1.Connected := True;
+  DataModule1.ZQueryTambahDesa.SQL.Text := 'SELECT * FROM desa';
+  DataModule1.ZQueryTambahDesa.Open;
+
+  if not DataModule1.ZQueryTambahDesa.IsEmpty then
+  begin
+    ComboBox1.Items.Clear;
+    while not DataModule1.ZQueryTambahDesa.Eof do
+    begin
+      ComboBox1.Items.AddObject(DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString, TObject(DataModule1.ZQueryTambahDesa.FieldByName('id_desa').AsInteger));
+      DataModule1.ZQueryTambahDesa.Next;
+    end;
+  end;
+  DataModule1.ZQueryTambahDesa.Close;
+end;
+
+procedure TFormTambahLokasi.ComboBox2DropDown(Sender: TObject);
+begin
+//  DataModule1.ZConnection1.Connected := True;
+  DataModule1.ZQueryTambahKecamatan.SQL.Text := 'SELECT * FROM kecamatan';
+  DataModule1.ZQueryTambahKecamatan.Open;
+
+  if not DataModule1.ZQueryTambahKecamatan.IsEmpty then
+  begin
+    ComboBox2.Items.Clear;
+    while not DataModule1.ZQueryTambahKecamatan.Eof do
+    begin
+      ComboBox2.Items.AddObject(DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString, TObject(DataModule1.ZQueryTambahKecamatan.FieldByName('id_kecamatan').AsInteger));
+      DataModule1.ZQueryTambahKecamatan.Next;
+    end;
+  end;
+  DataModule1.ZQueryTambahKecamatan.Close;
+end;
+
+procedure TFormTambahLokasi.ComboBox3DropDown(Sender: TObject);
+begin
+//  DataModule1.ZConnection1.Connected := True;
+  DataModule1.ZQueryTambahJenisTempatIbadah.SQL.Text := 'SELECT * FROM jenis_tempat_ibadah';
+  DataModule1.ZQueryTambahJenisTempatIbadah.Open;
+
+  if not DataModule1.ZQueryTambahJenisTempatIbadah.IsEmpty then
+  begin
+    ComboBox3.Items.Clear;
+    while not DataModule1.ZQueryTambahJenisTempatIbadah.Eof do
+    begin
+      ComboBox3.Items.AddObject(DataModule1.ZQueryTambahJenisTempatIbadah.FieldByName('jenis_tempat_ibadah').AsString, TObject(DataModule1.ZQueryTambahJenisTempatIbadah.FieldByName('id_jenis_tempat_ibadah').AsInteger));
+      DataModule1.ZQueryTambahJenisTempatIbadah.Next;
+    end;
+  end;
+  DataModule1.ZQueryTambahJenisTempatIbadah.Close;
+end;
+
+procedure TFormTambahLokasi.DBGrid1CellClick(Column: TColumn);
+var
+  SelectedValue: string;
+  SelectedValue2: string;
+  SelectedValue3: string;
+begin
+  Edit1.Text := DataModule1.ZQueryTambahLokasi.FieldByName('nama_tempat').AsString;
+  Edit2.Text := DataModule1.ZQueryTambahLokasi.FieldByName('koordinat').AsString;
+  Edit3.Text := DataModule1.ZQueryTambahLokasi.FieldByName('alamat').AsString;
+
+  if not DataModule1.ZQueryTambahDesa.IsEmpty then
+    begin
+      // Mengambil nilai dari kolom yang dipilih di DBGrid
+      SelectedValue := DataModule1.ZQueryTambahLokasi.FieldByName('desa').AsString;
+
+      // Membersihkan ComboBox sebelum menambahkan nilai baru
+      ComboBox1.Clear;
+
+      // Menambahkan nilai dari kolom yang dipilih ke dalam ComboBox
+      DataModule1.ZQueryTambahDesa.First; // Pindah ke baris pertama
+      while not DataModule1.ZQueryTambahDesa.Eof do
+      begin
+        ComboBox1.Items.AddObject(DataModule1.ZQueryTambahDesa.FieldByName('desa').AsString, TObject(DataModule1.ZQueryTambahDesa.FieldByName('id_desa').AsInteger));
+        DataModule1.ZQueryTambahDesa.Next;
+      end;
+
+      // Memilih nilai yang sesuai dengan nilai yang dipilih di DBGrid
+      ComboBox1.ItemIndex := ComboBox1.Items.IndexOf(SelectedValue);
+    end;
+
+  if not DataModule1.ZQueryTambahKecamatan.IsEmpty then
+    begin
+      SelectedValue2 := DataModule1.ZQueryTambahLokasi.FieldByName('kecamatan').AsString;
+
+      ComboBox2.Clear;
+
+      DataModule1.ZQueryTambahKecamatan.First;
+      while not DataModule1.ZQueryTambahKecamatan.Eof do
+      begin
+        ComboBox2.Items.AddObject(DataModule1.ZQueryTambahKecamatan.FieldByName('kecamatan').AsString, TObject(DataModule1.ZQueryTambahKecamatan.FieldByName('id_kecamatan').AsInteger));
+        DataModule1.ZQueryTambahKecamatan.Next;
+      end;
+
+      ComboBox2.ItemIndex := ComboBox2.Items.IndexOf(SelectedValue2);
+    end;
+
+  if not DataModule1.ZQueryTambahJenisTempatIbadah.IsEmpty then
+    begin
+      SelectedValue3 := DataModule1.ZQueryTambahLokasi.FieldByName('jenis_tempat_ibadah').AsString;
+
+      ComboBox3.Clear;
+
+      DataModule1.ZQueryTambahJenisTempatIbadah.First;
+      while not DataModule1.ZQueryTambahJenisTempatIbadah.Eof do
+      begin
+        ComboBox3.Items.AddObject(DataModule1.ZQueryTambahJenisTempatIbadah.FieldByName('jenis_tempat_ibadah').AsString, TObject(DataModule1.ZQueryTambahJenisTempatIbadah.FieldByName('id_jenis_tempat_ibadah').AsInteger));
+        DataModule1.ZQueryTambahJenisTempatIbadah.Next;
+      end;
+
+      ComboBox3.ItemIndex := ComboBox3.Items.IndexOf(SelectedValue3);
+    end;
+
+end;
+
+procedure TFormTambahLokasi.Edit4Change(Sender: TObject);
+begin
+    DataModule1.ZQueryTambahLokasi.Close;
+    DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT lokasi2.id_lokasi, lokasi2.nama_tempat, lokasi2.koordinat, lokasi2.alamat, desa.desa, kecamatan.kecamatan, jenis_tempat_ibadah.jenis_tempat_ibadah' +
+    ' FROM lokasi2'+
+    ' INNER JOIN desa ON lokasi2.id_desa=desa.id_desa' +
+    ' INNER JOIN kecamatan ON lokasi2.id_kecamatan=kecamatan.id_kecamatan' +
+    ' INNER JOIN jenis_tempat_ibadah ON lokasi2.id_jenis_tempat_ibadah=jenis_tempat_ibadah.id_jenis_tempat_ibadah' +
+    ' WHERE nama_tempat LIKE :Search';
+    DataModule1.ZQueryTambahLokasi.ParamByName('Search').AsString := '%' + Edit4.Text + '%';
+    DataModule1.ZQueryTambahLokasi.Open;
+
+    Label8.Caption := IntToStr(DataModule1.ZQueryTambahLokasi.RecordCount);
+end;
+
+procedure TFormTambahLokasi.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  DataModule1.ZConnection1.Connected := False;
+end;
+
+procedure TFormTambahLokasi.FormCreate(Sender: TObject);
+begin
+  DataModule1.ZConnection1.Connected := False;
+  DataModule1.ZQueryTambahLokasi.Active := False;
+end;
+
+procedure TFormTambahLokasi.FormShow(Sender: TObject);
+begin
+//  DataModule1.ZConnection1.Connected := True;
+//  DataModule1.ZQueryTambahLokasi.SQL.Text := 'SELECT lokasi2.id_lokasi, lokasi2.nama_tempat, lokasi2.koordinat, lokasi2.alamat, desa.desa, kecamatan.kecamatan, jenis_tempat_ibadah.jenis_tempat_ibadah' +
+//  ' FROM lokasi2' +
+//  ' INNER JOIN desa ON lokasi2.id_desa=desa.id_desa' +
+//  ' INNER JOIN kecamatan ON lokasi2.id_kecamatan=kecamatan.id_kecamatan' +
+//  ' INNER JOIN jenis_tempat_ibadah ON lokasi2.id_jenis_tempat_ibadah=jenis_tempat_ibadah.id_jenis_tempat_ibadah';
+//  DataModule1.ZQueryTambahLokasi.Open;
+//  DataModule1.ZConnection1.Connected := False;
+//  DataModule1.ZQueryTambahLokasi.Active := False;
+  Label8.Caption := IntToStr(DataModule1.ZQueryTambahLokasi.RecordCount);
+end;
+
+end.

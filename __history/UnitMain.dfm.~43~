@@ -1,0 +1,234 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Align = alClient
+  Caption = 'FormMain'
+  ClientHeight = 690
+  ClientWidth = 1370
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  Menu = MainMenu1
+  WindowState = wsMaximized
+  OnClose = MainClose
+  TextHeight = 15
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 1370
+    Height = 690
+    Align = alClient
+    TabOrder = 0
+    ExplicitWidth = 1366
+    ExplicitHeight = 689
+    object Label1: TLabel
+      Left = 64
+      Top = 120
+      Width = 418
+      Height = 33
+      Caption = 'Halaman Kendali Semua Sirine'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -28
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 64
+      Top = 192
+      Width = 267
+      Height = 29
+      Caption = 'Petunjuk penggunaan :'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label3: TLabel
+      Left = 64
+      Top = 240
+      Width = 523
+      Height = 27
+      Caption = '1. Tombol On/Off digunakan untuk mengaktifkan'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 64
+      Top = 328
+      Width = 504
+      Height = 27
+      Caption = '2. Tombol Test digunakan untuk uji coba sirine.'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label6: TLabel
+      Left = 64
+      Top = 376
+      Width = 511
+      Height = 27
+      Caption = '3. Tombol Sirine digunakan untuk mengaktifkan'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label4: TLabel
+      Left = 91
+      Top = 280
+      Width = 391
+      Height = 27
+      Caption = 'dan menonaktifkan perangkat sirine.'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Label7: TLabel
+      Left = 91
+      Top = 416
+      Width = 492
+      Height = 27
+      Caption = 'sirine tsunami pada kondisi yang sebenarnya.'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -24
+      Font.Name = 'Arial'
+      Font.Style = []
+      ParentFont = False
+    end
+    object BtOn: TButton
+      Left = 728
+      Top = 181
+      Width = 89
+      Height = 57
+      Caption = 'ON'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BtOnClick
+    end
+    object BtOff: TButton
+      Left = 840
+      Top = 181
+      Width = 89
+      Height = 57
+      Caption = 'OFF'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 1
+      OnClick = BtOffClick
+    end
+    object BtTest: TButton
+      Left = 696
+      Top = 280
+      Width = 105
+      Height = 70
+      Caption = 'TEST'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 2
+      OnClick = BtTestClick
+    end
+    object BtSirine: TButton
+      Left = 863
+      Top = 280
+      Width = 105
+      Height = 70
+      Caption = 'SIRINE'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -20
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 3
+      OnClick = BtSirineClick
+    end
+  end
+  object MainMenu1: TMainMenu
+    object PerangkatSirine1: TMenuItem
+      Caption = 'Kontrol Sirine'
+      Default = True
+      ImageName = 'PerangkatSirine1'
+      OnClick = PerangkatSirine1Click
+    end
+    object DataPerangkat1: TMenuItem
+      Caption = 'Data Perangkat'
+      OnClick = DataPerangkat1Click
+    end
+    object DataPenanganan1: TMenuItem
+      Caption = 'Data Penanganan'
+      OnClick = DataPenanganan1Click
+    end
+    object DataPenanganan2: TMenuItem
+      Caption = 'Data User'
+      OnClick = DataPenanganan2Click
+    end
+    object LogAktivitas1: TMenuItem
+      Caption = 'Log Aktivitas'
+      OnClick = LogAktivitas1Click
+    end
+    object ambahData1: TMenuItem
+      Caption = 'Tambah Data'
+      object ambahStatus1: TMenuItem
+        Caption = 'Tambah Desa'
+        OnClick = ambahStatus1Click
+      end
+      object ambahDesa1: TMenuItem
+        Caption = 'Tambah Kecamatan'
+        OnClick = ambahDesa1Click
+      end
+      object ambahKecamatan1: TMenuItem
+        Caption = 'Tambah Lokasi'
+        OnClick = ambahKecamatan1Click
+      end
+      object ambahKecamatan2: TMenuItem
+        Caption = 'Tambah Status'
+        OnClick = ambahKecamatan2Click
+      end
+      object ambahPerangkat1: TMenuItem
+        Caption = 'Tambah Perangkat'
+        OnClick = ambahPerangkat1Click
+      end
+      object ambahJenisTempatIbadah1: TMenuItem
+        Caption = 'Tambah Jenis Tempat Ibadah'
+        OnClick = ambahJenisTempatIbadah1Click
+      end
+    end
+    object Keluar1: TMenuItem
+      Caption = 'Keluar'
+      OnClick = Keluar1Click
+    end
+  end
+end

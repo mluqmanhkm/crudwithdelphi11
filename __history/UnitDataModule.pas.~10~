@@ -1,0 +1,48 @@
+unit UnitDataModule;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractConnection, ZConnection,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset;
+
+type
+  TDataModule1 = class(TDataModule)
+    ZQueryPerangkat: TZQuery;
+    ZConnection1: TZConnection;
+    DataSourcePerangkat: TDataSource;
+    DataSourcePenanganan: TDataSource;
+    ZQueryPenanganan: TZQuery;
+    ZQueryLogin: TZQuery;
+    ZQueryUser: TZQuery;
+    DataSourceUser: TDataSource;
+    ZQueryTambahDesa: TZQuery;
+    DataSourceTambahDesa: TDataSource;
+    ZQueryTambahKecamatan: TZQuery;
+    DataSourceTambahKecamatan: TDataSource;
+    ZQueryTambahLokasi: TZQuery;
+    DataSourceTambahLokasi: TDataSource;
+    ZQueryTambahStatus: TZQuery;
+    DataSourceTambahStatus: TDataSource;
+    ZQueryTambahPerangkat: TZQuery;
+    DataSourceTambahPerangkat: TDataSource;
+    DataSourceTambahJenisTempatIbadah: TDataSource;
+    ZQueryTambahJenisTempatIbadah: TZQuery;
+    ZQueryLog: TZQuery;
+    DataSourceLog: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DataModule1: TDataModule1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.
